@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Returned Product</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>Returned Date:</td>
+                <td><input type="date" name="Returned Date" /></td>
+            </tr>
+            <tr>
+                <td>Return Quantity:</td>
+                <td><input type="number" name="Return Quantity" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add" /></td>
+            </tr>
+        </table>  
+    </form>
+</div>
+{% endblock %}
