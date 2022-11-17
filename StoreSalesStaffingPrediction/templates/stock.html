@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Stock Detail</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>TotalQuantity:</td>
+                <td><input type="number" name="TotalQuantity" /></td>
+            </tr>
+            <tr>
+                <td>SoldQuantity:</td>
+                <td><input type="number" name="SoldQuantity" /></td>
+            </tr>
+            <tr>
+                <td>DefectiveProductQuantity:</td>
+                <td><input type="number" name="DefectiveProductQuantity" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Update" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
