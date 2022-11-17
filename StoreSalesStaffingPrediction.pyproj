@@ -71,7 +71,9 @@
     <Content Include="StoreSalesStaffingPrediction\templates\contact.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\index.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\layout.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\NewProduct.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\registration.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\SeasonMaster.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
