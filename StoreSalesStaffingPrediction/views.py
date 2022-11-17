@@ -42,12 +42,18 @@ def about():
 
 @app.route('/registration', methods = ['POST','GET'])
 def registration():
+    return render_template(
+        'registration.html',
+        title='Register',
+        year=datetime.now().year,
+        message='Your application description page.'
+    )
     if request.method == 'POST':
       user = request.form
       user = [request.form['FirstName'], request.form['LastName'], request.form['EmailID'], request.form['Password'], request.form['ContactNo']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'DESKTOP-0AV09UH'
+          SERVER_NAME = 'KRISH'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -87,4 +93,29 @@ def registration():
     else:
       return render_template('registration.html')
 
-
+@app.route('/login', methods = ['POST','GET'])
+def login():
+    return render_template(
+        'login.html',
+        title='Login',
+        year=datetime.now().year,
+        message='Your application description page.'
+    )
+    if request.method == 'POST':
+      user = request.form
+      user = [request.form['EmailID'], request.form['Password']]
+      if user:
+          DRIVER = 'SQL Server'
+          SERVER_NAME = 'KRISH'
+          DATABASE_NAME = 'StoreSalesPrediction'
+          cursor = ''
+          
+          conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+          
+    else:
+      return render_template('login.html')

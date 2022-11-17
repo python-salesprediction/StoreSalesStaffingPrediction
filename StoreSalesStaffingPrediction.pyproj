@@ -71,6 +71,7 @@
     <Content Include="StoreSalesStaffingPrediction\templates\contact.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\index.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\layout.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\login.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\registration.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
