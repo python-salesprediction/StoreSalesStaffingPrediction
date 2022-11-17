@@ -73,6 +73,7 @@
     <Content Include="StoreSalesStaffingPrediction\templates\DiscountDetail.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\index.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\layout.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\login.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\NewProduct.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\registration.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\ReturnedProduct.html" />
