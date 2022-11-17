@@ -1,0 +1,39 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+<h1>Add New Product</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>Product Name:</td>
+                <td><input type="text" name="ProductName" placeholder="Product name" required/></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input type="text" name="Description" placeholder="color,shape,size etc" /></td>
+            </tr>
+            <tr>
+                <td>Category:</td>
+                <td><input type="text" name="Category" placeholder="category" required/></td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td><input type="text" name="Price" placeholder="price" required /></td>
+            </tr>
+            <tr>
+                <td>Manufacture Date:</td>
+                <td><input type="date" name="ManufactureDate" /></td>
+            </tr>
+            <tr>
+                <td>Expiry Date:</td>
+                <td><input type="date" name="ExpiryDate" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Register" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

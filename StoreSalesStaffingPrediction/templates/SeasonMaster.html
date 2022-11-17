@@ -1,0 +1,27 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+<h1>Add Season</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>Season:</td>
+                <td><input type="text" name="Season" placeholder="Season" required /></td>
+            </tr>
+            <tr>
+                <td>Start Month:</td>
+                <td><input type="date" name="StartMonth" /></td>
+            </tr>
+            <tr>
+                <td>End Month:</td>
+                <td><input type="date" name="EndMonth" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add Season" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
