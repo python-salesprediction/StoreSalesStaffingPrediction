@@ -47,7 +47,7 @@ def registration():
       user = [request.form['FirstName'], request.form['LastName'], request.form['EmailID'], request.form['Password'], request.form['ContactNo']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'DESKTOP-0AV09UH'
+          SERVER_NAME = 'MANSIPATEL\ASQL'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -87,4 +87,49 @@ def registration():
     else:
       return render_template('registration.html')
 
+@app.route('/Discountdetail', methods = ['POST','GET'])
+def discountdetail():
+    if request.method == 'POST':
+      user = request.form
+      user = [request.form['DiscountType'], request.form['DiscountPercentage']]
+      if user:
+          DRIVER = 'SQL Server'
+          SERVER_NAME = 'MANSIPATEL\ASQL'
+          DATABASE_NAME = 'StoreSalesPrediction'
+          cursor = ''
+          
+          conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+          
+          try:
+              conn = odbc.connect(conn_string)
+          except Exception as e:
+              print(e)
+              print('task is terminated')
+              sys.exit()
+          else:
+              cursor = conn.cursor()
 
+              insert_statement = """
+                INSERT INTO DiscountDetail
+                VALUES (?,?)
+              """
+              
+              try:
+                    cursor.execute(insert_statement, user)        
+              except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+              else:
+                    print('Discount details uploaded successfully')
+                    cursor.commit()
+                    cursor.close()
+              
+                    return render_template('DiscountDetail.html',discountdetail=user)
+    else:
+      return render_template('DiscountDetail.html')

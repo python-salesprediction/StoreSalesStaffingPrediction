@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Discount Detail</h1>
+<div>
+     <form action="" method="POST">
+         <table>
+             <tr>
+                 <td>Discount Type:</td>
+                 <td><input type="text" name="DiscountType" /></td>
+             </tr>
+             <tr>
+                 <td>Discount Percentage:</td>
+                 <td><input type="number" name="DiscountPercentage" /></td>
+             </tr>
+             <tr>
+                 <td></td>
+                 <td><input type="submit" value="Add" /></td>
+             </tr>
+
+         </table>
+     </form>
+</div>
+{% endblock %}
