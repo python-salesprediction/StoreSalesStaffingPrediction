@@ -169,7 +169,7 @@ def discountdetail():
                     print(e.value)
                     print('transaction rolled back')
               else:
-                    print('Discount details uploaded successfully')
+                    print('Discount details inserted successfully.')
                     cursor.commit()
                     cursor.close()
               
@@ -216,7 +216,7 @@ def seasonmaster():
                     print(e.value)
                     print('transaction rolled back')
               else:
-                    print('season added successfully')
+                    print('Season inserted successfully.')
                     cursor.commit()
                     cursor.close()
               
@@ -231,7 +231,7 @@ def Category():
         user = [request.form['Category']]
         if user:
             DRIVER = 'SQL Server'
-            SERVER_NAME = 'BHAGVATI\ASQL'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
             DATABASE_NAME = 'StoreSalesPrediction'
             cursor = ''
 
@@ -263,13 +263,55 @@ def Category():
                     print(e.value)
                     print('transaction rolled back')
                 else:
-                    print('registrated successfully')
+                    print('Category inserted successfully.')
                     cursor.commit()
                     cursor.close()
 
                     return render_template('category.html', category=user)
     else:
         return render_template('Category.html')
+
+@app.route('/NewProduct', methods=['POST', 'GET'])
+def Product():
+    if request.method == 'GET':
+        user = request.form
+        user = [request.form['Product']]
+        if True:
+            DRIVER = 'SQL Server'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
+            DATABASE_NAME = 'StoreSalesPrediction'
+            cursor = ''
+
+            conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+
+            try:
+                conn = odbc.connect(conn_string)
+            except Exception as e:
+                print(e)
+                print('task is terminated')
+                sys.exit()
+            else:
+                cursor = conn.cursor()
+                
+                try:
+                    cursor.execute("select * from CategoryMaster")
+                    categories = cursor.fetchall();
+                except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+                else:
+                    cursor.commit()
+                    cursor.close()
+
+                    return render_template('NewProduct.html', categories=categories)
+    else:
+        return render_template('NewProduct.html')
 
 
 
