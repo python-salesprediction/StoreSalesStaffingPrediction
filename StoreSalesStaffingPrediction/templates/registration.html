@@ -6,6 +6,15 @@
     <form action="" method="POST">
         <table>
             <tr>
+                <td>Register As:</td>
+                <td>
+                    <select name="Role">
+                        <option value="Employee">Employee</option>
+                        <option value="Vendor">Vendor</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>First Name:</td>
                 <td><input type="text" name="FirstName" /></td>
             </tr>
@@ -29,7 +38,7 @@
                 <td></td>
                 <td><input type="submit" value="Register" /></td>
             </tr>
-        </table>  
+        </table>
     </form>
 </div>
 {% endblock %}

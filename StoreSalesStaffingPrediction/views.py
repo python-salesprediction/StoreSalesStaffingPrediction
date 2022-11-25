@@ -42,18 +42,18 @@ def about():
 
 @app.route('/registration', methods = ['POST','GET'])
 def registration():
-    return render_template(
-        'registration.html',
-        title='Register',
-        year=datetime.now().year,
-        message='Your application description page.'
-    )
+    #return render_template(
+    #    'registration.html',
+    #    title='Register',
+    #    year=datetime.now().year,
+    #    message='Your application description page.'
+    #)
     if request.method == 'POST':
       user = request.form
       user = [request.form['FirstName'], request.form['LastName'], request.form['EmailID'], request.form['Password'], request.form['ContactNo']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'KRISH'
+          SERVER_NAME = 'DESKTOP-0AV09UH'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -79,13 +79,23 @@ def registration():
               """
               
               try:
-                    cursor.execute(insert_statement, user)        
+                    cursor.execute(insert_statement, user)  
+                    cursor.execute("SELECT @@IDENTITY AS ID;")
+                    user_id = cursor.fetchone()[0]
+
+                    user_role = [user_id,request.form['Role']]
+
+                    insert_user_role = """
+                        INSERT INTO UserRole
+                        VALUES (?, ?)
+                    """
+                    cursor.execute(insert_user_role, user_role)  
               except Exception as e:
                     cursor.rollback()
                     print(e.value)
                     print('transaction rolled back')
               else:
-                    print('registrated successfully')
+                    print('Registered successfully')
                     cursor.commit()
                     cursor.close()
               
@@ -119,6 +129,7 @@ def login():
           
     else:
       return render_template('login.html')
+
 @app.route('/Discountdetail', methods = ['POST','GET'])
 def discountdetail():
     if request.method == 'POST':
@@ -212,7 +223,6 @@ def seasonmaster():
                     return render_template('Seasonmaster.html',season=user)
     else:
       return render_template('SeasonMaster.html') 
-
 
 @app.route('/category', methods=['POST', 'GET'])
 def Category():
