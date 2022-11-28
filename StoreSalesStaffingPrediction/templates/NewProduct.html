@@ -6,22 +6,22 @@
     <form action="" method="POST">
         <table>
             <tr>
+                <td>Category:</td>
+                <td>
+                    <select name="CategoryID">
+                        {% for category in categories %}
+                        <option value={{category['CategoryID']}}>{{category['Category']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>Product Name:</td>
                 <td><input type="text" name="ProductName" placeholder="Product name" required /></td>
             </tr>
             <tr>
                 <td>Description</td>
-                <td><textarea  rows="4" cols="50" type="text" name="Description" placeholder="color,shape,size etc"></textarea></td>
-            </tr>
-            <tr>
-                <td>Category:</td>
-                <td>
-                    <select name="Category">
-                        {% for category in categories %}
-                            <option value={{category['CategoryID']}}>{{category['Category']}}</option>
-                        {% endfor %}
-                    </select>
-                </td>
+                <td><textarea rows="4" cols="50" type="text" name="Description" placeholder="Color,shape,size etc"></textarea></td>
             </tr>
             <tr>
                 <td>Price:</td>

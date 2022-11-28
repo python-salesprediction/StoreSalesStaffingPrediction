@@ -14,31 +14,25 @@ from StoreSalesStaffingPrediction import app
 @app.route('/home')
 def home():
     """Renders the home page."""
-    return render_template(
-        'index.html',
+    return render_template('index.html',
         title='Home Page',
-        year=datetime.now().year,
-    )
+        year=datetime.now().year,)
 
 @app.route('/contact')
 def contact():
     """Renders the contact page."""
-    return render_template(
-        'contact.html', 
+    return render_template('contact.html', 
         title='Contact',
         year=datetime.now().year,
-        message='Your contact page.'
-    )
+        message='Your contact page.')
 
 @app.route('/about')
 def about():
     """Renders the about page."""
-    return render_template(
-        'about.html',
+    return render_template('about.html',
         title='About',
         year=datetime.now().year,
-        message='Your application description page.'
-    )
+        message='Your application description page.')
 
 @app.route('/registration', methods = ['POST','GET'])
 def registration():
@@ -105,12 +99,10 @@ def registration():
 
 @app.route('/login', methods = ['POST','GET'])
 def login():
-    return render_template(
-        'login.html',
+    return render_template('login.html',
         title='Login',
         year=datetime.now().year,
-        message='Your application description page.'
-    )
+        message='Your application description page.')
     if request.method == 'POST':
       user = request.form
       user = [request.form['EmailID'], request.form['Password']]
@@ -273,43 +265,60 @@ def Category():
 
 @app.route('/NewProduct', methods=['POST', 'GET'])
 def Product():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
     if request.method == 'GET':
-        user = request.form
-        user = [request.form['Product']]
-        if True:
-            DRIVER = 'SQL Server'
-            SERVER_NAME = 'DESKTOP-0AV09UH'
-            DATABASE_NAME = 'StoreSalesPrediction'
-            cursor = ''
+        try:
+            cursor.execute("select * from CategoryMaster")
+            categories = cursor.fetchall()
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('NewProduct.html', categories = categories)
 
-            conn_string = f"""
-              Driver={{{DRIVER}}};
-              Server={SERVER_NAME};
-              Database={DATABASE_NAME};
-              Trust_Connection=yes;
-          """
-
-            try:
-                conn = odbc.connect(conn_string)
-            except Exception as e:
-                print(e)
-                print('task is terminated')
-                sys.exit()
-            else:
-                cursor = conn.cursor()
-                
-                try:
-                    cursor.execute("select * from CategoryMaster")
-                    categories = cursor.fetchall();
-                except Exception as e:
-                    cursor.rollback()
-                    print(e.value)
-                    print('transaction rolled back')
-                else:
-                    cursor.commit()
-                    cursor.close()
-
-                    return render_template('NewProduct.html', categories=categories)
+    elif request.method == 'POST':
+        product = request.form
+        product = [request.form['CategoryID'], request.form['ProductName'], request.form['Description'], request.form['Price'], request.form['ManufactureDate'], request.form['ExpiryDate']]
+        insert_statement = """
+               INSERT INTO ProductDetail
+               VALUES (?, ?, ?, ?, ?, ?)
+            """
+              
+        try:
+              cursor.execute(insert_statement, product)        
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Product inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('NewProduct.html',product=product)
     else:
         return render_template('NewProduct.html')
 
