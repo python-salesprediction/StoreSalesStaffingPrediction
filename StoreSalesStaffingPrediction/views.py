@@ -322,6 +322,48 @@ def Product():
     else:
         return render_template('NewProduct.html')
 
+@app.route('/ProductReport', methods=['POST', 'GET'])
+def productreport():
+    if request.method == 'GET':
+        if True:
+            DRIVER = 'SQL Server'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
+            DATABASE_NAME = 'StoreSalesPrediction'
+            cursor = ''
+
+            conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+
+            try:
+                conn = odbc.connect(conn_string)
+            except Exception as e:
+                print(e)
+                print('task is terminated')
+                sys.exit()
+            else:
+                cursor = conn.cursor()
+                storedProc = "Exec GetProductDetail"
+                #params = ("And", 10)
+
+                try:
+                    cursor.execute(storedProc)
+                    productreport = cursor.fetchall()
+                except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+                else:
+                    cursor.commit()
+                    cursor.close()
+
+                    return render_template('ProductReport.html', productreport = productreport)
+    else:
+        return render_template('ProductReport.html')
+
 
 
 

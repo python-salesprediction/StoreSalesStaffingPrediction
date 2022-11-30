@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Products Report</h1>
+<div>
+    <form>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th align="center">Product ID</th>
+                <th align="center">Category</th>
+                <th align="center">Product Name</th>
+                <th align="center">Description</th>
+                <th align="center">Price</th>
+                <th align="center">Manufactured Date</th>
+                <th align="center">Expiry Date</th>
+            </tr>
+            <tr>
+                {% for product in productreport %}
+
+                <td align="center">{{product[0]}}</td>
+                <td align="center">{{product[1]}}</td>
+                <td align="center">{{product[2]}}</td>
+                <td align="center">{{product[3]}}</td>
+                <td align="right">{{product[4]}}</td>
+                <td align="center">{{product[5]}}</td>
+                <td align="center">{{product[6]}}</td>
+
+                {% endfor %}
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
