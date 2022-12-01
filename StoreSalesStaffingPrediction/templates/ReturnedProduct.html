@@ -7,16 +7,36 @@
     <form action="" method="POST">
         <table>
             <tr>
+                <td>Sales ID:</td>
+                <td>
+                    <select name="SalesID">
+                        {% for sale in sales %}
+                        <option value={{sale['SalesID']}}>{{sale['SalesID']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Product:</td>
+                <td>
+                    <select name="ProductID">
+                        {% for product in products %}
+                        <option value={{product['ProductID']}}>{{product['ProductName']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>Returned Date:</td>
-                <td><input type="date" name="Returned Date" /></td>
+                <td><input type="date" name="ReturnedDate" /></td>
             </tr>
             <tr>
                 <td>Return Quantity:</td>
-                <td><input type="number" name="Return Quantity" /></td>
+                <td><input type="number" name="ReturnQuantity" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Add" /></td>
+                <td><input type="submit" value="Update" /></td>
             </tr>
         </table>  
     </form>

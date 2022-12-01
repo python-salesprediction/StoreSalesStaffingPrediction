@@ -7,7 +7,7 @@ import sys
 import pyodbc as odbc
 
 from datetime import datetime
-from flask import session, redirect, url_for, escape, request, render_template
+from flask import session, redirect, url_for, escape, request, render_template, flash
 from StoreSalesStaffingPrediction import app
 from datetime import datetime
 
@@ -43,7 +43,7 @@ def registration():
       user = [request.form['FirstName'], request.form['LastName'], request.form['EmailID'], request.form['Password'], request.form['ContactNo']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'MANSIPATEL\ASQL'
+          SERVER_NAME = 'DESKTOP-0AV09UH'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -85,11 +85,11 @@ def registration():
                     print(e.value)
                     print('transaction rolled back')
               else:
-                    print('Registered successfully')
+                    
                     cursor.commit()
                     cursor.close()
-              
-                    return render_template('about.html',registration=user,title='Register',
+                    flash(f'Registered successfully!', 'success')
+                    return render_template('login.html',registration=user,title='Register',
                                                                           year=datetime.now().year)
     else:
       return render_template('registration.html',title='Register', year=datetime.now().year)
@@ -262,7 +262,7 @@ def Category():
         user = [request.form['Category']]
         if user:
             DRIVER = 'SQL Server'
-            SERVER_NAME = 'MANSIPATEL\ASQL'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
             DATABASE_NAME = 'StoreSalesPrediction'
             cursor = ''
 
@@ -295,6 +295,7 @@ def Category():
                     print('transaction rolled back')
                 else:
                     print('Category inserted successfully.')
+                    flash(f'Category inserted successfully!', 'success')
                     cursor.commit()
                     cursor.close()
 
@@ -306,7 +307,7 @@ def Category():
 def Product():
 
     DRIVER = 'SQL Server'
-    SERVER_NAME = 'MANSIPATEL\ASQL'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
     DATABASE_NAME = 'StoreSalesPrediction'
     cursor = ''
 
@@ -550,6 +551,68 @@ def Staffscheduledetail():
               return render_template('StaffScheduleDetail.html',staff = staff,title='Staff Schedule', year=datetime.now().year)
     else:
         return render_template('StaffScheduleDetail.html',title='Staff Schedule', year=datetime.now().year)
+
+@app.route('/returnedproduct', methods=['POST', 'GET'])
+def ReturnedProduct():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from SalesDetail")
+            sales = cursor.fetchall()
+
+            cursor.execute("select * from ProductDetail")
+            products = cursor.fetchall()
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('ReturnedProduct.html', sales = sales, products = products ,title='Returned Product', year=datetime.now().year)
+
+    elif request.method == 'POST':
+        product = request.form
+        product = [request.form['ProductID'], request.form['ReturnedDate'], request.form['ReturnQuantity'], request.form['SalesID']]
+        insert_statement = """
+               INSERT INTO ReturnedProductDetail
+               VALUES (?, ?, ?, ?)
+            """
+              
+        try:
+              cursor.execute(insert_statement, product)        
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Product updated successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('ReturnedProduct.html',product=product,title='Returned Product', year=datetime.now().year)
+    else:
+        return render_template('ReturnedProduct.html',title='Returned Product', year=datetime.now().year)
 #endregion
 
 #region Reports
