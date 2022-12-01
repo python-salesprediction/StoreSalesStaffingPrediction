@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Discount Detail</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>Employee:</td>
+                <td>
+                    <select name="UserID">
+                        {% for user in users %}
+                        <option value={{user['UserID']}}>{{user['FirstName']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Employment Type:</td>
+                <td><input type="text" name="EmploymentType" /></td>
+            </tr>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <select name="CategoryID">
+                        {% for category in categories %}
+                        <option value={{category['CategoryID']}}>{{category['Category']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

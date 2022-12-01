@@ -47,7 +47,7 @@ def registration():
       user = [request.form['FirstName'], request.form['LastName'], request.form['EmailID'], request.form['Password'], request.form['ContactNo']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'DESKTOP-0AV09UH'
+          SERVER_NAME = 'MANSIPATEL\ASQL'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -108,7 +108,7 @@ def login():
       user = [request.form['EmailID'], request.form['Password']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'KRISH'
+          SERVER_NAME = 'MANSIPATEL\ASQL'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -176,7 +176,7 @@ def seasonmaster():
       user = [request.form['Season'], request.form['StartMonth'], request.form['EndMonth']]
       if user:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'LAPTOP-IKD7TK5J\ISQL'
+          SERVER_NAME = 'MANSIPATEL\ASQL'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -223,7 +223,7 @@ def Category():
         user = [request.form['Category']]
         if user:
             DRIVER = 'SQL Server'
-            SERVER_NAME = 'DESKTOP-0AV09UH'
+            SERVER_NAME = 'MANSIPATEL\ASQL'
             DATABASE_NAME = 'StoreSalesPrediction'
             cursor = ''
 
@@ -267,7 +267,7 @@ def Category():
 def Product():
 
     DRIVER = 'SQL Server'
-    SERVER_NAME = 'DESKTOP-0AV09UH'
+    SERVER_NAME = 'MANSIPATEL\ASQL'
     DATABASE_NAME = 'StoreSalesPrediction'
     cursor = ''
 
@@ -327,7 +327,7 @@ def productreport():
     if request.method == 'GET':
         if True:
             DRIVER = 'SQL Server'
-            SERVER_NAME = 'DESKTOP-0AV09UH'
+            SERVER_NAME = 'MANSIPATEL\ASQL'
             DATABASE_NAME = 'StoreSalesPrediction'
             cursor = ''
 
@@ -364,6 +364,126 @@ def productreport():
     else:
         return render_template('ProductReport.html')
 
+@app.route('/staffdetail', methods=['POST', 'GET'])
+def Staffdetail():
 
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'MANSIPATEL\ASQL'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
 
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
 
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from CategoryMaster")
+            categories = cursor.fetchall()
+
+            cursor.execute("select * from UserMaster")
+            users = cursor.fetchall()
+
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('staffdetail.html', categories = categories, users = users)
+
+    elif request.method == 'POST':
+        staffdetail = request.form
+        staffdetail = [request.form['UserID'],request.form['EmploymentType'],request.form['CategoryID']]
+        insert_statement = """
+               INSERT INTO StaffDetail
+               VALUES (?,?,?)
+            """
+              
+        try:
+              cursor.execute(insert_statement,staffdetail)        
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Product inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('staffdetail.html',staffdetail = staffdetail)
+    else:
+        return render_template('staffdetail.html')
+
+@app.route('/Staffscheduledetail', methods=['POST', 'GET'])
+def Staffscheduledetail():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'MANSIPATEL\ASQL'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from StaffDetail")
+            staff = cursor.fetchall()
+
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('StaffScheduleDetail.html', staff = staff)
+
+    elif request.method == 'POST':
+        staff = request.form
+        staff = [request.form['StaffID'],request.form['Date'],request.form['DayWeek'],request.form['ShiftStart'],request.form['ShiftEnd']]
+        insert_statement = """
+               INSERT INTO StaffScheduleDetail
+               VALUES (?,?,?,?,?)
+            """
+              
+        try:
+              cursor.execute(insert_statement,staff)        
+
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Product inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('StaffScheduleDetail.html',staff = staff)
+    else:
+        return render_template('StaffScheduleDetail.html')
