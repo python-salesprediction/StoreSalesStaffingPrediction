@@ -9,6 +9,7 @@ import pyodbc as odbc
 from datetime import datetime
 from flask import session, redirect, url_for, escape, request, render_template
 from StoreSalesStaffingPrediction import app
+from datetime import datetime
 
 @app.route('/')
 @app.route('/home')
@@ -34,6 +35,7 @@ def about():
         year=datetime.now().year,
         message='Your application description page.')
 
+#region User Registration, login, logout
 @app.route('/registration', methods = ['POST','GET'])
 def registration():
     if request.method == 'POST':
@@ -156,15 +158,17 @@ def logout():
    session.pop('email', None)
    session.pop('role', None)
    return redirect(url_for('login'))
+#endregion 
 
+#region Master pages and Foreign Key insertions
 @app.route('/Discountdetail', methods = ['POST','GET'])
 def discountdetail():
     if request.method == 'POST':
-      user = request.form
-      user = [request.form['DiscountType'], request.form['DiscountPercentage']]
-      if user:
+      discount = request.form
+      discount = [request.form['DiscountType'], request.form['DiscountPercentage']]
+      if discount:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'MANSIPATEL\ASQL'
+          SERVER_NAME = 'DESKTOP-0AV09UH'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -190,7 +194,7 @@ def discountdetail():
               """
               
               try:
-                    cursor.execute(insert_statement, user)        
+                    cursor.execute(insert_statement, discount)        
               except Exception as e:
                     cursor.rollback()
                     print(e.value)
@@ -200,18 +204,18 @@ def discountdetail():
                     cursor.commit()
                     cursor.close()
               
-                    return render_template('DiscountDetail.html',discountdetail=user,title='Discount', year=datetime.now().year)
+                    return render_template('DiscountDetail.html',discountdetail=discount,title='Discount', year=datetime.now().year)
     else:
       return render_template('DiscountDetail.html',title='Discount', year=datetime.now().year)
 
 @app.route('/season', methods = ['POST','GET'])
 def seasonmaster():
     if request.method == 'POST':
-      user = request.form
-      user = [request.form['Season'], request.form['StartMonth'], request.form['EndMonth']]
-      if user:
+      season = request.form
+      season = [request.form['Season'], request.form['StartMonth'], request.form['EndMonth']]
+      if season:
           DRIVER = 'SQL Server'
-          SERVER_NAME = 'LAPTOP-IKD7TK5J\ISQL'
+          SERVER_NAME = 'DESKTOP-0AV09UH'
           DATABASE_NAME = 'StoreSalesPrediction'
           cursor = ''
           
@@ -237,7 +241,7 @@ def seasonmaster():
               """
               
               try:
-                    cursor.execute(insert_statement, user)        
+                    cursor.execute(insert_statement, season)        
               except Exception as e:
                     cursor.rollback()
                     print(e.value)
@@ -247,7 +251,7 @@ def seasonmaster():
                     cursor.commit()
                     cursor.close()
               
-                    return render_template('Seasonmaster.html',season=user,title='Season', year=datetime.now().year)
+                    return render_template('Seasonmaster.html',season=season,title='Season', year=datetime.now().year)
     else:
       return render_template('SeasonMaster.html',title='Season', year=datetime.now().year) 
 
@@ -357,6 +361,74 @@ def Product():
     else:
         return render_template('NewProduct.html',title='Product', year=datetime.now().year)
 
+@app.route('/sales', methods=['POST', 'GET'])
+def Sales():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from ProductDetail")
+            products = cursor.fetchall()
+
+            cursor.execute("select * from SeasonMaster")
+            seasons = cursor.fetchall()
+
+            cursor.execute("select * from DiscountDetail")
+            discounts = cursor.fetchall()
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('sales.html', products = products, seasons= seasons, discounts = discounts ,title='Sales', year=datetime.now().year)
+
+    elif request.method == 'POST':
+        sales = request.form
+        sales_date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        sales = [request.form['ProductID'], sales_date, request.form['SalePrice'], request.form['ClearancePrice'], request.form['Quantity'], request.form['SeasonID'], request.form['DiscountID']]
+        insert_statement = """
+               INSERT INTO SalesDetail
+               VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
+              
+        try:
+              cursor.execute(insert_statement, sales)        
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Product sales inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('sales.html',sales=sales,title='Sales', year=datetime.now().year)
+    else:
+        return render_template('sales.html',title='Sales', year=datetime.now().year)
+#endregion
+
+#region Reports
 
 #Reports Code
 @app.route('/ProductReport', methods=['POST', 'GET'])
@@ -406,6 +478,7 @@ def productreport():
                                                     year=datetime.now().year,
                                                     message='Product Details Report.')
 
+#endregion
 
 
 

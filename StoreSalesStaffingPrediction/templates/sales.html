@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Product Sales</h1>
+<div>
+    <form action="" method="POST">
+        <table>
+            <tr>
+                <td>Product:</td>
+                <td>
+                    <select name="ProductID">
+                        {% for product in products %}
+                        <option value={{product['ProductID']}}>{{product['ProductName']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Sale Price:</td>
+                <td><input type="text" name="SalePrice" placeholder="Sale Price" required /></td>
+            </tr>
+            <tr>
+                <td>Clearance Price:</td>
+                <td><input type="text" name="ClearancePrice" placeholder="Clearance Price" /></td>
+            </tr>
+            <tr>
+                <td>Quantity:</td>
+                <td><input type="text" name="Quantity" placeholder="Quantity" required /></td>
+            </tr>
+            <tr>
+                <td>Season:</td>
+                <td>
+                    <select name="SeasonID">
+                        {% for season in seasons %}
+                        <option value={{season['SeasonID']}}>{{season['Season']}} ({{season['StartMonth']}} - {{season['EndMonth']}})</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Discount:</td>
+                <td>
+                    <select name="DiscountID">
+                        {% for discount in discounts %}
+                        <option value={{discount['DiscountID']}}>{{discount['DiscountType']}} - {{discount['DiscountPercentage']}}%</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Add" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
