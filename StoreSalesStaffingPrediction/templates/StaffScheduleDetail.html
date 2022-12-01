@@ -10,30 +10,30 @@
                 <td>
                     <select name="StaffID">
                         {% for s in staff %}
-                        <option value={{s['StaffID']}}>{{s['StaffID']}}</option>
+                        <option value={{s['StaffID']}}>{{s['FirstName']}} - {{s['Category']}} ({{s['EmploymentType']}})</option>
                         {% endfor %}
                     </select>
                 </td>
             </tr>
             <tr>
-                <td>Date:</td>
+                <td>Shift Date:</td>
                 <td><input type="date" name="Date" /></td>
             </tr>
             <tr>
-                <td>Day Week:</td>
+                <td>Day of Week:</td>
                 <td><input type="text" name="DayWeek" /></td>
             </tr>
             <tr>
-                <td>Shift Start:</td>
+                <td>Shift Start Time:</td>
                 <td><input type="time" name="ShiftStart" /></td>
             </tr>
             <tr>
-                <td>Shift End:</td>
+                <td>Shift End Time:</td>
                 <td><input type="time" name="ShiftEnd" /></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Add" /></td>
+                <td><input type="submit" value="Schedule" /></td>
             </tr>
         </table>
     </form>

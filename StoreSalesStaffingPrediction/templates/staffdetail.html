@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Discount Detail</h1>
+<h1>Staff Detail</h1>
 <div>
     <form action="" method="POST">
         <table>
@@ -10,17 +10,23 @@
                 <td>
                     <select name="UserID">
                         {% for user in users %}
-                        <option value={{user['UserID']}}>{{user['FirstName']}}</option>
+                        <option value={{user['UserID']}}>{{user['FirstName']}} - {{user['EmailID']}}</option>
                         {% endfor %}
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Employment Type:</td>
-                <td><input type="text" name="EmploymentType" /></td>
+                <td>
+                    <select name="EmploymentType">
+                        <option value="Part Time">Part Time</option>
+                        <option value="Full Time">Full Time</option>
+                        <option value="Seasonal">Seasonal</option>
+                    </select>
+                </td>
             </tr>
             <tr>
-                <td>Category:</td>
+                <td>Department:</td>
                 <td>
                     <select name="CategoryID">
                         {% for category in categories %}

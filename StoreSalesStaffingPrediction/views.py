@@ -426,6 +426,130 @@ def Sales():
               return render_template('sales.html',sales=sales,title='Sales', year=datetime.now().year)
     else:
         return render_template('sales.html',title='Sales', year=datetime.now().year)
+
+@app.route('/staffdetail', methods=['POST', 'GET'])
+def Staffdetail():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from CategoryMaster")
+            categories = cursor.fetchall()
+
+            cursor.execute("select u.UserID,u.FirstName,u.LastName,u.EmailID from UserMaster u inner join UserRole r on r.UserID = u.UserID where r.Role = 'Employee'")
+            users = cursor.fetchall()
+
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('staffdetail.html', categories = categories, users = users,title='Staff', year=datetime.now().year)
+
+    elif request.method == 'POST':
+        staffdetail = request.form
+        staffdetail = [request.form['UserID'],request.form['EmploymentType'],request.form['CategoryID']]
+        insert_statement = """
+               INSERT INTO StaffDetail
+               VALUES (?,?,?)
+            """
+              
+        try:
+              cursor.execute(insert_statement,staffdetail)        
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Staff inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('staffdetail.html',staffdetail = staffdetail,title='Staff', year=datetime.now().year)
+    else:
+        return render_template('staffdetail.html',title='Staff', year=datetime.now().year)
+
+@app.route('/Staffscheduledetail', methods=['POST', 'GET'])
+def Staffscheduledetail():
+
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select s.StaffID,u.FirstName,s.EmploymentType,c.Category from StaffDetail s inner join UserMaster u on u.UserID = s.UserID inner join CategoryMaster c on c.CategoryID = s.CategoryID")
+            staff = cursor.fetchall()
+
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('StaffScheduleDetail.html', staff = staff,title='Staff Schedule', year=datetime.now().year)
+
+    elif request.method == 'POST':
+        staff = request.form
+        staff = [request.form['StaffID'],request.form['Date'],request.form['DayWeek'],request.form['ShiftStart'],request.form['ShiftEnd']]
+        insert_statement = """
+               INSERT INTO StaffScheduleDetail
+               VALUES (?,?,?,?,?)
+            """
+              
+        try:
+              cursor.execute(insert_statement,staff)        
+
+        except Exception as e:
+              cursor.rollback()
+              print(e.value)
+              print('transaction rolled back')
+        else:
+              print('Schedule inserted successfully.')
+              cursor.commit()
+              cursor.close()
+              return render_template('StaffScheduleDetail.html',staff = staff,title='Staff Schedule', year=datetime.now().year)
+    else:
+        return render_template('StaffScheduleDetail.html',title='Staff Schedule', year=datetime.now().year)
 #endregion
 
 #region Reports
@@ -477,127 +601,6 @@ def productreport():
         return render_template('ProductReport.html',title='Products',
                                                     year=datetime.now().year,
                                                     message='Product Details Report.')
+#endregion
 
-@app.route('/staffdetail', methods=['POST', 'GET'])
-def Staffdetail():
 
-    DRIVER = 'SQL Server'
-    SERVER_NAME = 'MANSIPATEL\ASQL'
-    DATABASE_NAME = 'StoreSalesPrediction'
-    cursor = ''
-
-    conn_string = f"""
-       Driver={{{DRIVER}}};
-       Server={SERVER_NAME};
-       Database={DATABASE_NAME};
-       Trust_Connection=yes;
-  """
-
-    try:
-        conn = odbc.connect(conn_string)
-    except Exception as e:
-        print(e)
-        print('task is terminated')
-        sys.exit()
-    else:
-        cursor = conn.cursor()
-
-    if request.method == 'GET':
-        try:
-            cursor.execute("select * from CategoryMaster")
-            categories = cursor.fetchall()
-
-            cursor.execute("select * from UserMaster")
-            users = cursor.fetchall()
-
-        except Exception as e:
-            cursor.rollback()
-            print(e.value)
-            print('transaction rolled back')
-        else:
-            cursor.commit()
-            cursor.close()
-            return render_template('staffdetail.html', categories = categories, users = users)
-
-    elif request.method == 'POST':
-        staffdetail = request.form
-        staffdetail = [request.form['UserID'],request.form['EmploymentType'],request.form['CategoryID']]
-        insert_statement = """
-               INSERT INTO StaffDetail
-               VALUES (?,?,?)
-            """
-              
-        try:
-              cursor.execute(insert_statement,staffdetail)        
-        except Exception as e:
-              cursor.rollback()
-              print(e.value)
-              print('transaction rolled back')
-        else:
-              print('Product inserted successfully.')
-              cursor.commit()
-              cursor.close()
-              return render_template('staffdetail.html',staffdetail = staffdetail)
-    else:
-        return render_template('staffdetail.html')
-
-@app.route('/Staffscheduledetail', methods=['POST', 'GET'])
-def Staffscheduledetail():
-
-    DRIVER = 'SQL Server'
-    SERVER_NAME = 'MANSIPATEL\ASQL'
-    DATABASE_NAME = 'StoreSalesPrediction'
-    cursor = ''
-
-    conn_string = f"""
-       Driver={{{DRIVER}}};
-       Server={SERVER_NAME};
-       Database={DATABASE_NAME};
-       Trust_Connection=yes;
-  """
-
-    try:
-        conn = odbc.connect(conn_string)
-    except Exception as e:
-        print(e)
-        print('task is terminated')
-        sys.exit()
-    else:
-        cursor = conn.cursor()
-
-    if request.method == 'GET':
-        try:
-            cursor.execute("select * from StaffDetail")
-            staff = cursor.fetchall()
-
-        except Exception as e:
-            cursor.rollback()
-            print(e.value)
-            print('transaction rolled back')
-        else:
-            cursor.commit()
-            cursor.close()
-            return render_template('StaffScheduleDetail.html', staff = staff)
-
-    elif request.method == 'POST':
-        staff = request.form
-        staff = [request.form['StaffID'],request.form['Date'],request.form['DayWeek'],request.form['ShiftStart'],request.form['ShiftEnd']]
-        insert_statement = """
-               INSERT INTO StaffScheduleDetail
-               VALUES (?,?,?,?,?)
-            """
-              
-        try:
-              cursor.execute(insert_statement,staff)        
-
-        except Exception as e:
-              cursor.rollback()
-              print(e.value)
-              print('transaction rolled back')
-        else:
-              print('Product inserted successfully.')
-              cursor.commit()
-              cursor.close()
-              return render_template('StaffScheduleDetail.html',staff = staff)
-    else:
-        return render_template('StaffScheduleDetail.html')
