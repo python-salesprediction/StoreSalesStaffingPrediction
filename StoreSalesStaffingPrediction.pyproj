@@ -78,6 +78,7 @@
     <Content Include="StoreSalesStaffingPrediction\templates\ProductReport.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\registration.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\ReturnedProduct.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\sales.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\SeasonMaster.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\staffdetail.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\StaffScheduleDetail.html" />
