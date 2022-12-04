@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Products Report</h1>
+<div>
+    <form method="post">
+        <table>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <select name="CategoryID">
+                        <option value="0">Select Category</option>
+                        {% for category in categories %}
+                        <option value={{category['CategoryID']}}>{{category['Category']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td></td><td></td>
+                <td>Expiry Month:</td>
+                <td>
+                    <select name="Month">
+                        <option value="0">Select Month</option>
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sept</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit">Search</button>
+                </td>
+            </tr>
+        </table><br /><br />
+        <table border="1" cellpadding="10">
+            <tr>
+                <th align="center">Category</th>
+                <th align="center">Product Name</th>
+                <th align="center">Description</th>
+                <th align="center">Price</th>
+                <th align="center">Manufactured Date</th>
+                <th align="center">Expiry Date</th>
+            </tr>
+            {% for product in productreport %}
+            <tr>
+                <td align="center">{{product[0]}}</td>
+                <td align="center">{{product[1]}}</td>
+                <td align="center">{{product[2]}}</td>
+                <td align="right">{{product[3]}}</td>
+                <td align="center">{{product[4]}}</td>
+                <td align="center">{{product[5]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</div>
+{% endblock %}

@@ -643,7 +643,6 @@ def productreport():
             else:
                 cursor = conn.cursor()
                 storedProc = "Exec GetProductDetail"
-                #params = ("And", 10)
 
                 try:
                     cursor.execute(storedProc)
@@ -849,6 +848,65 @@ def salesreport():
         return render_template('ProductSalesReport.html',title='Sales Report',
                                                     year=datetime.now().year,
                                                     message='Sales Report.')
+
+@app.route('/categoryproductreport', methods=['POST', 'GET'])
+def categoryproductreport():
+    DRIVER = 'SQL Server'
+    SERVER_NAME = 'DESKTOP-0AV09UH'
+    DATABASE_NAME = 'StoreSalesPrediction'
+    cursor = ''
+
+    conn_string = f"""
+       Driver={{{DRIVER}}};
+       Server={SERVER_NAME};
+       Database={DATABASE_NAME};
+       Trust_Connection=yes;
+  """
+
+    try:
+        conn = odbc.connect(conn_string)
+    except Exception as e:
+        print(e)
+        print('task is terminated')
+        sys.exit()
+    else:
+        cursor = conn.cursor()
+
+    if request.method == 'GET':
+        try:
+            cursor.execute("select * from CategoryMaster")
+            categories = cursor.fetchall()
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+            return render_template('CategoryProductReport.html', categories = categories,title='Product Report', year=datetime.now().year)
+
+    elif request.method == 'POST':
+        try:
+            storedProc = "Exec GetProductByCategoryExpiry @CategoryID = ?, @Month = ?"
+            params = (request.form['CategoryID'], request.form['Month'])
+            cursor.execute(storedProc, params)
+            productreport = cursor.fetchall()
+        except Exception as e:
+            cursor.rollback()
+            print(e.value)
+            print('transaction rolled back')
+        else:
+            cursor.commit()
+            cursor.close()
+
+            return render_template('CategoryProductReport.html', productreport = productreport,
+                                                        title='Products',
+                                                        year=datetime.now().year,
+                                                        message='Product Details Report.')
+    else:
+        return render_template('CategoryProductReport.html',title='Products',
+                                                    year=datetime.now().year,
+                                                    message='Product Details Report.')
 #endregion
 
 
