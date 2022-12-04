@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Employee Report</h1>
+<div>
+    <form>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th align="center">Name</th>
+                <th align="center">Email ID</th>
+                <th align="center">Contact No</th>
+                <th align="center">Employement Type</th>
+                <th align="center">Department</th>
+            </tr>
+            {% for employee in employees %}
+            <tr>
+                <td align="center">{{employee[0]}}</td>
+                <td align="center">{{employee[1]}}</td>
+                <td align="center">{{employee[2]}}</td>
+                <td align="center">{{employee[3]}}</td>
+                <td align="center">{{employee[4]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</div>
+{% endblock %}

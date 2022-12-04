@@ -711,6 +711,98 @@ def schedulereport():
         return render_template('EmployeeScheduleReport.html',title='Schedule Report',
                                                     year=datetime.now().year,
                                                     message='Employee Schedule Report.')
+
+@app.route('/employeesschedulereport', methods=['POST', 'GET'])
+def employeesschedulereport():
+    if request.method == 'GET':
+        if True:
+            DRIVER = 'SQL Server'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
+            DATABASE_NAME = 'StoreSalesPrediction'
+            cursor = ''
+
+            conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+
+            try:
+                conn = odbc.connect(conn_string)
+            except Exception as e:
+                print(e)
+                print('task is terminated')
+                sys.exit()
+            else:
+                cursor = conn.cursor()
+                storedProc = "Exec GetAllEmployeeSchedule"
+
+                try:
+                    cursor.execute(storedProc)
+                    schedulereport = cursor.fetchall()
+                except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+                else:
+                    cursor.commit()
+                    cursor.close()
+
+                    return render_template('EmployeesScheduleReport.html', schedulereport = schedulereport,
+                                                                title='Schedule Report',
+                                                                year=datetime.now().year,
+                                                                message='Employees Schedule Report.')
+    else:
+        return render_template('EmployeesScheduleReport.html',title='Schedule Report',
+                                                    year=datetime.now().year,
+                                                    message='Employees Schedule Report.')
+
+@app.route('/employeesreport', methods=['POST', 'GET'])
+def employeesreport():
+    if request.method == 'GET':
+        if True:
+            DRIVER = 'SQL Server'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
+            DATABASE_NAME = 'StoreSalesPrediction'
+            cursor = ''
+
+            conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+
+            try:
+                conn = odbc.connect(conn_string)
+            except Exception as e:
+                print(e)
+                print('task is terminated')
+                sys.exit()
+            else:
+                cursor = conn.cursor()
+                storedProc = "Exec GetEmployeeDetails"
+
+                try:
+                    cursor.execute(storedProc)
+                    employees = cursor.fetchall()
+                except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+                else:
+                    cursor.commit()
+                    cursor.close()
+
+                    return render_template('EmployeeDetailReport.html', employees = employees,
+                                                                title='Employees Report',
+                                                                year=datetime.now().year,
+                                                                message='Employees Report.')
+    else:
+        return render_template('EmployeeDetailReport.html',title='Employees Report',
+                                                    year=datetime.now().year,
+                                                    message='Employees Report.')
 #endregion
 
 

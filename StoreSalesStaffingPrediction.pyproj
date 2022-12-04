@@ -71,7 +71,9 @@
     <Content Include="StoreSalesStaffingPrediction\templates\category.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\contact.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\DiscountDetail.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\EmployeeDetailReport.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\EmployeeScheduleReport.html" />
+    <Content Include="StoreSalesStaffingPrediction\templates\EmployeesScheduleReport.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\index.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\layout.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\login.html" />
@@ -83,7 +85,6 @@
     <Content Include="StoreSalesStaffingPrediction\templates\SeasonMaster.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\staffdetail.html" />
     <Content Include="StoreSalesStaffingPrediction\templates\StaffScheduleDetail.html" />
-    <Content Include="StoreSalesStaffingPrediction\templates\stock.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 

@@ -14,9 +14,8 @@
                 <th align="center">Manufactured Date</th>
                 <th align="center">Expiry Date</th>
             </tr>
+            {% for product in productreport %}
             <tr>
-                {% for product in productreport %}
-
                 <td align="center">{{product[0]}}</td>
                 <td align="center">{{product[1]}}</td>
                 <td align="center">{{product[2]}}</td>
@@ -24,9 +23,8 @@
                 <td align="right">{{product[4]}}</td>
                 <td align="center">{{product[5]}}</td>
                 <td align="center">{{product[6]}}</td>
-
-                {% endfor %}
             </tr>
+            {% endfor %}
         </table>
     </form>
 </div>
