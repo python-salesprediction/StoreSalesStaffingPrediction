@@ -803,6 +803,52 @@ def employeesreport():
         return render_template('EmployeeDetailReport.html',title='Employees Report',
                                                     year=datetime.now().year,
                                                     message='Employees Report.')
+
+@app.route('/salesreport', methods=['POST', 'GET'])
+def salesreport():
+    if request.method == 'GET':
+        if True:
+            DRIVER = 'SQL Server'
+            SERVER_NAME = 'DESKTOP-0AV09UH'
+            DATABASE_NAME = 'StoreSalesPrediction'
+            cursor = ''
+
+            conn_string = f"""
+              Driver={{{DRIVER}}};
+              Server={SERVER_NAME};
+              Database={DATABASE_NAME};
+              Trust_Connection=yes;
+          """
+
+            try:
+                conn = odbc.connect(conn_string)
+            except Exception as e:
+                print(e)
+                print('task is terminated')
+                sys.exit()
+            else:
+                cursor = conn.cursor()
+                storedProc = "Exec GetProductSales"
+
+                try:
+                    cursor.execute(storedProc)
+                    sales = cursor.fetchall()
+                except Exception as e:
+                    cursor.rollback()
+                    print(e.value)
+                    print('transaction rolled back')
+                else:
+                    cursor.commit()
+                    cursor.close()
+
+                    return render_template('ProductSalesReport.html', sales = sales,
+                                                                title='Sales Report',
+                                                                year=datetime.now().year,
+                                                                message='Sales Report.')
+    else:
+        return render_template('ProductSalesReport.html',title='Sales Report',
+                                                    year=datetime.now().year,
+                                                    message='Sales Report.')
 #endregion
 
 
