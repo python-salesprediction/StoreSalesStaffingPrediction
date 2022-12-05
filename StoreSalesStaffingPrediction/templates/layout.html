@@ -44,8 +44,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('Staffdetail') }}">Staff Details</a></li>
-                    <li><a href="{{ url_for('Staffscheduledetail') }}">Staff Schedule</a></li>
                     <li><a href="{{ url_for('productreport') }}">Product Report</a></li>
                     <li><a href="{{ url_for('schedulereport') }}">Employee Schedule Report</a></li>
                     <li><a href="{{ url_for('logout') }}">Log Out</a></li>
@@ -73,6 +71,9 @@
 
         </div>
     </div>
+
+    <br />
+    <br />
 
     <div class="container body-content">
         {% block content %}{% endblock %}

@@ -88,8 +88,7 @@ def registration():
                     
                     cursor.commit()
                     cursor.close()
-                    flash(f'Registered successfully!', 'success')
-                    return render_template('login.html',registration=user,title='Register',
+                    return render_template('about.html',registration=user,title='Registered successfully! Please login now',
                                                                           year=datetime.now().year)
     else:
       return render_template('registration.html',title='Register', year=datetime.now().year)
@@ -142,8 +141,8 @@ def login():
                                                                      year=datetime.now().year)
 
                     else:
-                        return render_template('login.html',
-                                title='Login',
+                        return render_template('about.html',
+                                title='Username or password incorrect! Please try again',
                                 year=datetime.now().year)
 
     else:
