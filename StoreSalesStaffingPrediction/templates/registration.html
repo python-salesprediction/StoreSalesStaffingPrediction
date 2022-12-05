@@ -16,29 +16,47 @@
             </tr>
             <tr>
                 <td>First Name:</td>
-                <td><input type="text" name="FirstName" /></td>
+                <td><input id="FirstName" type="text" name="FirstName" maxlength="50" required/></td>
             </tr>
             <tr>
                 <td>Last Name:</td>
-                <td><input type="text" name="LastName" /></td>
+                <td><input id="lastname" type="text" name="LastName" maxlength="50" required/></td>
             </tr>
             <tr>
                 <td>Email ID:</td>
-                <td><input type="email" name="EmailID" /></td>
+                <td><input id="email" type="email" name="EmailID" required/></td>
             </tr>
             <tr>
                 <td>Password:</td>
-                <td><input type="password" name="Password" /></td>
+                <td><input id="password1" type="password" name="Password" required /></td>
             </tr>
             <tr>
                 <td>Contact No:</td>
-                <td><input type="text" name="ContactNo" /></td>
+                <td><input id="ContactNo" type="text" name="ContactNo" minlength="10" maxlength="15" required /><td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="Register" /></td>
+                <td><input type="submit" value="Register" onclick="validation(ContactNo)" required/></td>
             </tr>
         </table>
     </form>
 </div>
+
+<script>
+    function validation(id)
+    {
+
+        let x = document.getElementById("ContactNo").value;
+
+
+        if (isNaN(x) || x < 0000000000 || x > 9999999999)
+        {
+            alert("Input not valid");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>
 {% endblock %}
