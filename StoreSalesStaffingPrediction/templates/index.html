@@ -3,30 +3,25 @@
 {% block content %}
 
 <div class="jumbotron">
-    <h1>Flask</h1>
-    <p class="lead">Flask is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <h1>Store Sales and Staffing Prediction</h1>
+    <p class="lead">SSSP is a web app to manage the products, sales and many other details of products for a grocery store. It also handles staffing reports and manage schedules for all the staff. It has logins for admin, vendor and employees with their respective role privilages to perform operations and view reports.</p>
     <p><a href="http://flask.pocoo.org/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>Admin</h2>
         <p>
-            Flask gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Admin can view basicaly every column on the navigation bar and add/edit all the records in the application including product details and staff details.
         </p>
-        <p><a class="btn btn-default" href="http://flask.pocoo.org/docs/">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="https://pypi.python.org/pypi">Learn more &raquo;</a></p>
+        <h2>Vendor</h2>
+        <p>Vendor can only view the product reports as vendors are only for product purchase and returns which are available in the product reports.</p>
     </div>
     <div class="col-md-4">
-        <h2>Microsoft Azure</h2>
-        <p>You can easily publish to Microsoft Azure using Visual Studio. Find out how you can host your application using a free trial today.</p>
-        <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
+        <h2>Employee</h2>
+        <p>Employees can only view pages which are relevant to them which are product reports and and employee schedule reports.</p>
     </div>
 </div>
 

@@ -8,7 +8,7 @@
             <tr>
                 <td>Category:</td>
                 <td>
-                    <select name="CategoryID">
+                    <select name="CategoryID" required>
                         {% for category in categories %}
                         <option value={{category['CategoryID']}}>{{category['Category']}}</option>
                         {% endfor %}
@@ -17,15 +17,15 @@
             </tr>
             <tr>
                 <td>Product Name:</td>
-                <td><input type="text" name="ProductName" placeholder="Product name" required /></td>
+                <td><input type="text" name="ProductName" placeholder="Product name" required/></td>
             </tr>
             <tr>
                 <td>Description</td>
-                <td><textarea rows="4" cols="50" type="text" name="Description" placeholder="Color,shape,size etc"></textarea></td>
+                <td><textarea rows="4" cols="50" type="text" name="Description" placeholder="Color,shape,size etc" required></textarea></td>
             </tr>
             <tr>
                 <td>Price:</td>
-                <td><input type="text" name="Price" placeholder="price" required /></td>
+                <td><input type="number" name="Price" placeholder="price" min="0" required/></td>
             </tr>
             <tr>
                 <td>Manufacture Date:</td>
